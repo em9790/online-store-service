@@ -17,61 +17,11 @@ import java.util.Optional;
 
 @Repository("categoryDAO")
 @Transactional
-public class CategoryDAO implements ICategoryDAO {
-
-
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+public class CategoryDAO extends BaseDAO<Category> implements ICategoryDAO {
 
     @Override
-    public List<Category> list() {
-        String selectQuery = "FROM Category WHERE active =:active";
-        Query query = sessionFactory.getCurrentSession().createQuery(selectQuery);
-        query.setParameter("active",true);
-        return query.getResultList();
+    protected Class<Category> getEntityClass() {
+        return Category.class;
     }
 
-    @Override
-    public Category get(int id) {
-       return sessionFactory.getCurrentSession().get(Category.class, Integer.valueOf(id));
-    }
-
-    @Override
-    @Transactional
-    public boolean add(Category category) {
-        try {
-          sessionFactory.getCurrentSession().persist(category);
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public boolean update(Category category) {
-        try {
-            sessionFactory.getCurrentSession().update(category);
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public boolean delete(Category category) {
-        try {
-            category.setActive(false);
-            sessionFactory.getCurrentSession().update(category);
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return false;
-        }
-    }
 }

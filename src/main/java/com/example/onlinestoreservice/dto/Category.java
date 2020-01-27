@@ -4,29 +4,12 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Category extends EntityBase {
+
     private String name;
     private String description;
-
     @Column(name="image_url")
     private String imageURL;
-
-    @Column(name="is_active")
-    private boolean active= true;
-
-    @Column(name="reg_date")
-    private Date regDate;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -52,31 +35,15 @@ public class Category {
         this.imageURL = imageURL;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Date getRegDate() {
-        return regDate;
-    }
-
-    public void setRegDate(Date regDate) {
-        this.regDate = regDate;
-    }
-
     @Override
     public String toString() {
         return "Category{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageURL='" + imageURL + '\'' +
-                ", active=" + active +
-                ", regDate=" + regDate +
+                ", active=" + isActive() +
+                ", regDate=" + getRegDate() +
                 '}';
     }
 }

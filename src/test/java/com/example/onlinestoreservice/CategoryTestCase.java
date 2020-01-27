@@ -17,6 +17,8 @@ import static org.junit.Assert.*;
 public class CategoryTestCase {
 
     private static ICategoryDAO categoryDAO;
+    private Category category;
+    private static int addedId=4;
 
     @BeforeClass
     public static void init(){
@@ -26,39 +28,44 @@ public class CategoryTestCase {
         categoryDAO = context.getBean("categoryDAO" , ICategoryDAO.class);
     }
 
-  /*  @Test
+    @Test
     public void testAddCategory(){
-        Category category = new Category();
-        category.setName("Monitor");
+        category = new Category();
+        category.setName("Kitchen Appliance");
         category.setDescription("this is just a test of category");
-        category.setImageURL("https://www.cbronline.com/wp-content/uploads/2016/06/what-is-URL-770x503.jpg");
-        boolean result = categoryDAO.add(category);
+        category.setImageURL("KitchenAppliance.jpeg");
+        addedId = categoryDAO.add(category);
 
-        assertEquals("Successfully added a category inside the table!" , true, result);
-    }*/
+        assertNotEquals("Successfully added a category inside the table!" , 0, addedId);
+    }
 
     @Test
     public void testGetCategory(){
-        Category category = categoryDAO.get(1);
-        assertEquals("Successfully fetched a category from the table!" , "Home Appliance", category.getName());
+        try{
+            category = categoryDAO.get(addedId);
+            assertEquals("Successfully fetched a category from the table!" , "Laptop", category.getName());
+        }
+       catch (Exception e){
+            e.printStackTrace();
+       }
     }
 
     @Test
     public void testUpdateCategory(){
-        Category category = categoryDAO.get(1);
+        category = categoryDAO.get(addedId);
         category.setName("Home Appliance");
         assertTrue("Successfully updated a category", categoryDAO.update(category));
     }
 
     @Test
-    public void testDeleteCategory(){
-        Category category = categoryDAO.get(1);
-        assertTrue("Successfully deleted a category", categoryDAO.delete(category));
+    public void testListCategory(){
+        assertEquals("Successfully fetched all categories", 4, categoryDAO.listActive().size());
     }
 
     @Test
-    public void testListCategory(){
-        assertEquals("Successfully fetched all categories", 1, categoryDAO.list().size());
+    public void testDeleteCategory(){
+        category = categoryDAO.get(addedId);
+        assertTrue("Successfully deleted a category", categoryDAO.delete(category));
     }
 
 }
